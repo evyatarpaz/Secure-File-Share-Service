@@ -36,7 +36,7 @@ override.tf.json
 # -------------------------
 # Generated Artifacts
 # -------------------------
-*.zip  # הוספתי את זה כדי להתעלם מהלמבדה הארוזה
+*.zip # For packaged Lambda functions
 
 # -------------------------
 # Editors and IDEs
