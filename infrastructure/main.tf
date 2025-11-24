@@ -6,6 +6,7 @@ provider "aws" {
 # 1. DATA & STORAGE LAYER (S3 & DynamoDB)
 # ============================================================================
 
+
 # S3 Bucket for storing the shared files
 resource "aws_s3_bucket" "my_bucket" {
   bucket_prefix = "evyatar-files-"
