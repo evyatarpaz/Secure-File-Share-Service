@@ -89,3 +89,18 @@ resource "aws_iam_role_policy" "upload_policy" {
     ]
   })
 }
+
+resource "aws_lambda_function" "upload_lambda" {
+  filename = data.archive_file.upload_lambda_zip.output_path
+  function_name = "GenerateUploadLink"
+  role = aws_iam_role.lambda_role.arn
+  handler = "app.lambda_handler"
+  runtime = "python3.9"
+  source_code_hash = data.archive_file.upload_lambda_zip.output_base64sha256
+  environment {
+    variables = {
+      TABLE_NAME = aws_dynamodb_table.my_db.name
+      BUCKET_NAME =aws_s3_bucket.my_bucket.id
+    }
+  }
+}
