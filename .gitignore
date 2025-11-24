@@ -1,0 +1,52 @@
+# -------------------------
+# Operating system files
+# -------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# -------------------------
+# Python
+# -------------------------
+__pycache__/
+*.py[cod]
+env/
+venv/
+.venv/
+.env
+.env.*
+secrets.json
+credentials
+
+# -------------------------
+# Terraform (שים לב לשינויים פה!)
+# -------------------------
+.terraform/
+*.tfstate
+*.tfstate.backup
+crash.log
+override.tf
+override.tf.json
+*.tfvars
+*.tfvars.json
+
+# חשוב: אנחנו *לא* מתעלמים מ-.terraform.lock.hcl
+# כי אנחנו רוצים לשמור אותו ב-Git לטובת יציבות הגרסאות.
+
+# -------------------------
+# Generated Artifacts
+# -------------------------
+*.zip  # הוספתי את זה כדי להתעלם מהלמבדה הארוזה
+
+# -------------------------
+# Editors and IDEs
+# -------------------------
+.vscode/
+.idea/
+
+# -------------------------
+# Logs, databases, keys
+# -------------------------
+*.log
+*.pem
+*.key
