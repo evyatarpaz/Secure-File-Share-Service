@@ -19,7 +19,7 @@ secrets.json
 credentials
 
 # -------------------------
-# Terraform (שים לב לשינויים פה!)
+# Terraform
 # -------------------------
 .terraform/
 *.tfstate
@@ -30,8 +30,6 @@ override.tf.json
 *.tfvars
 *.tfvars.json
 
-# חשוב: אנחנו *לא* מתעלמים מ-.terraform.lock.hcl
-# כי אנחנו רוצים לשמור אותו ב-Git לטובת יציבות הגרסאות.
 
 # -------------------------
 # Generated Artifacts
