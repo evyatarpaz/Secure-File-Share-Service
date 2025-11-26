@@ -1,0 +1,153 @@
+/* =========================================
+   1. Global Reset & Typography
+   ========================================= */
+* {
+    box-sizing: border-box; /* Critical: Include padding and border in the element's total width/height */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6; /* Light grey background for better contrast */
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    display: flex;           /* Use Flexbox to center the card */
+    justify-content: center; /* Center horizontally */
+    min-height: 100vh;       /* Ensure full viewport height */
+}
+
+/* =========================================
+   2. Layout & Container (The Card)
+   ========================================= */
+.container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 550px;        /* Prevent the card from becoming too wide on large screens */
+    padding: 40px;
+    border-radius: 12px;     /* Rounded corners */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* Subtle shadow for depth perception */
+}
+
+/* =========================================
+   3. Header & Typography
+   ========================================= */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+h1 {
+    margin: 0 0 10px 0;
+    font-size: 28px;
+    color: #2c3e50;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-size: 16px;
+    margin: 0;
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #34495e;
+    border-left: 4px solid #3498db; /* Blue accent line next to section headers */
+    padding-left: 10px;
+}
+
+/* =========================================
+   4. Form Elements (Inputs)
+   ========================================= */
+.form-group {
+    margin-bottom: 20px;
+}
+
+input[type="text"], 
+input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s; /* Smooth transition for focus state */
+}
+
+input[type="text"]:focus {
+    border-color: #3498db; /* Highlight border color when input is focused */
+    outline: none;
+}
+
+/* =========================================
+   5. Buttons (Call to Action)
+   ========================================= */
+button {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #3498db; /* Primary blue color */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+}
+
+button:active {
+    transform: scale(0.98); /* Slight shrink effect on click for tactile feel */
+}
+
+/* Secondary button style (Green for Download) */
+.secondary-btn {
+    background-color: #27ae60;
+}
+
+.secondary-btn:hover {
+    background-color: #219150;
+}
+
+/* =========================================
+   6. Utility Classes & Results
+   ========================================= */
+.divider {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 14px;
+    color: #bdc3c7;
+    position: relative;
+}
+
+/* Styling for the box that displays results/links */
+.result-box {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    font-family: monospace; /* Monospace font for IDs and URLs */
+    word-break: break-all;  /* Critical: Force long URLs to wrap to the next line */
+    font-size: 13px;
+}
+
+/* Utility class to hide elements dynamically via JS */
+.hidden {
+    display: none;
+}
+
+/* State colors */
+.error {
+    color: #e74c3c;
+    background-color: #fcebe9;
+    border-color: #f5c6cb;
+}
+
+.success {
+    color: #27ae60;
+    background-color: #eafaf1;
+    border-color: #c3e6cb;
+}

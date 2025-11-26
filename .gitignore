@@ -34,7 +34,7 @@ override.tf.json
 # -------------------------
 # Generated Artifacts
 # -------------------------
-*.zip # For packaged Lambda functions
+*.zip
 
 # -------------------------
 # Editors and IDEs
