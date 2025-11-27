@@ -26,59 +26,6 @@ Try the production environment:
 
 ---
 
-# 🏗️ Architecture
-
-### 📌 High-Level System Flow (Improved Diagram – GitHub Compatible)
-
-```mermaid
-flowchart TD
-
-    %% USER LAYER
-    User["👤 End User"]
-    Browser["🌐 Browser UI (Frontend)"]
-
-    %% EDGE LAYER
-    CDN["🚀 CloudFront (CDN)"]
-    StaticSite["📄 S3 Static Website"]
-
-    %% API LAYER
-    APIGW["🛡️ API Gateway"]
-
-    %% COMPUTE
-    subgraph ComputeLayer["Compute Layer"]
-        UploadFunc["Lambda: Upload Handler"]
-        DownloadFunc["Lambda: Download Handler"]
-    end
-
-    %% DATA + STORAGE
-    subgraph DataLayer["Data Layer"]
-        DB["DynamoDB (File Metadata + TTL)"]
-        S3Bucket["S3 Bucket (Encrypted Files)"]
-    end
-
-    %% FLOW CONNECTIONS
-
-    User --> Browser
-
-    Browser -->|1. Access Website| CDN
-    CDN --> StaticSite
-
-    %% UPLOAD FLOW
-    Browser -->|2. POST /upload| APIGW
-    APIGW --> UploadFunc
-    UploadFunc -->|3. Generate Presigned URL| S3Bucket
-    UploadFunc -->|4. Save Metadata & TTL| DB
-    Browser -->|5. PUT File (Direct Upload)| S3Bucket
-
-    %% DOWNLOAD FLOW
-    Browser -->|6. GET /download?file_id| APIGW
-    APIGW --> DownloadFunc
-    DownloadFunc -->|7. Atomic Status Update| DB
-    DownloadFunc -->|8. 302 Redirect| S3Bucket
-```
-
----
-
 ## 🔌 API Endpoints  
 
 ### Upload – `POST /`
