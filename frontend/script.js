@@ -38,10 +38,10 @@ async function handleUpload() {
 
   // 10mb size limit check (client-side)
   const MAX_FILE_SIZE_MB = 10; // Must match backend limit
-    if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
-        alert(`File exceeds maximum size of ${MAX_FILE_SIZE_MB} MB.`);
-        return;
-    }
+  if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+    alert(`File exceeds maximum size of ${MAX_FILE_SIZE_MB} MB.`);
+    return;
+  }
 
   // Lock UI during upload
   uploadBtn.disabled = true;
@@ -62,13 +62,13 @@ async function handleUpload() {
       body: JSON.stringify({
         filename: file.name,
         content_type: file.type || "application/octet-stream",
-        file_size: file.size
+        file_size: file.size,
       }),
     });
     if (!response.ok) {
-        // Handle explicit errors from Lambda (like "File too large")
-        const errData = await response.json();
-        throw new Error(errData.message || `API Error: ${response.statusText}`);
+      // Handle explicit errors from Lambda (like "File too large")
+      const errData = await response.json();
+      throw new Error(errData.message || `API Error: ${response.statusText}`);
     }
 
     const data = await response.json();
@@ -90,23 +90,26 @@ async function handleUpload() {
       throw new Error("Failed to upload file to storage bucket.");
     }
 
-    // --- STEP C: Update UI with Shareable Link ---
+    // --- STEP C: Generate Shareable Link & Update UI ---
     const shareableLink = `${window.location.origin}${window.location.pathname}?file_id=${data.file_id}`;
 
+    // We use a read-only input field for the link so users can see it easily.
+    // The button triggers the 'copyToClipboard' function defined below.
     resultBox.innerHTML = `
-            <div class="success">
-                <strong>✅ Upload Successful!</strong><br>
-                <p style="margin: 5px 0; font-size: 0.9em;">Send this link to your recipient:</p>
-                
-                <div style="background: white; padding: 8px; border: 1px solid #ccc; margin-top: 5px; word-break: break-all; font-family: monospace;">
-                    <a href="${shareableLink}" target="_blank" style="text-decoration: none; color: #007bff;">${shareableLink}</a>
-                </div>
-                
-                <p style="font-size: 0.8em; color: #666; margin-top: 5px;">
-                    (Or just copy the ID: <b style="user-select: all;">${data.file_id}</b>)
-                </p>
+        <div class="success">
+            <strong>✅ Upload Successful!</strong><br>
+            <p style="margin: 5px 0; font-size: 0.9em;">Share this link:</p>
+            
+            <div class="copy-wrapper">
+                <input type="text" class="copy-input" value="${shareableLink}" readonly onclick="this.select();">
+                <button class="copy-btn" onclick="copyToClipboard(this, '${shareableLink}')">📋 Copy</button>
             </div>
-        `;
+            
+            <p style="font-size: 0.8em; color: #666; margin-top: 5px;">
+                File ID: <b style="user-select: all;">${data.file_id}</b>
+            </p>
+        </div>
+    `;
     resultBox.classList.remove("hidden");
   } catch (error) {
     console.error(error);
@@ -177,3 +180,34 @@ async function handleDownload() {
     downloadBtn.innerText = "Download File";
   }
 }
+
+// ============================================================
+// 4. UTILITY: COPY TO CLIPBOARD
+// ============================================================
+
+/**
+ * Copies text to the system clipboard and provides visual feedback.
+ * @param {HTMLElement} btnElement - The button that was clicked
+ * @param {string} textToCopy - The URL or text to copy
+ */
+async function copyToClipboard(btnElement, textToCopy) {
+  try {
+    // Use the modern Clipboard API
+    await navigator.clipboard.writeText(textToCopy);
+
+    // UI Feedback: Change button color and text
+    const originalText = btnElement.innerText;
+    btnElement.innerText = "Copied!";
+    btnElement.classList.add("copy-success");
+
+    // Revert back to original state after 2 seconds
+    setTimeout(() => {
+      btnElement.innerText = originalText;
+      btnElement.classList.remove("copy-success");
+    }, 2000);
+  } catch (err) {
+    console.error("Failed to copy: ", err);
+    alert("Failed to copy link manually. Please select the text and copy.");
+  }
+}
+
