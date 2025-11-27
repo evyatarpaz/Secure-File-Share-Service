@@ -36,38 +36,37 @@ Event-driven, serverless, scalable-by-design.
 
 ```mermaid
 graph TD
-    User[End User]
-    CDN[CloudFront (CDN)]
-    S3_Web[S3 Website (Frontend)]
-    API[API Gateway]
-    
-    subgraph "Compute Layer"
-        Auth[Lambda: Upload Handler]
-        DL[Lambda: Download Handler]
+
+    User["End User"]
+    CDN["CloudFront (CDN)"]
+    S3_Web["S3 Website (Frontend)"]
+    API["API Gateway"]
+
+    subgraph Compute_Layer ["Compute Layer"]
+        Auth["Lambda: Upload Handler"]
+        DL["Lambda: Download Handler"]
     end
-    
-    subgraph "Data Layer"
-        DB[(DynamoDB Metadata)]
-        S3_Storage[S3 Bucket (Files)]
+
+    subgraph Data_Layer ["Data Layer"]
+        DB["DynamoDB (Metadata)"]
+        S3_Storage["S3 Bucket (Files)"]
     end
 
     User -->|1. Access Website via HTTPS| CDN
     CDN --> S3_Web
-    
-    User -->|2. POST Upload Request| API
+
+    User -->|2. Request Upload (POST)| API
     API --> Auth
     Auth -->|3. Generate Presigned URL| S3_Storage
     Auth -->|4. Save Metadata & TTL| DB
-    
-    User -->|5. PUT File Directly| S3_Storage
-    
-    User -->|6. GET Download Request| API
-    API --> DL
-    DL -->|7. Atomic State Update| DB
-    DL -->|8. 302 Redirect| S3_Storage
-```
 
----
+    User -->|5. Upload File (Direct PUT)| S3_Storage
+
+    User -->|6. Request Download (GET)| API
+    API --> DL
+    DL -->|7. Atomic Validation & Status Update| DB
+    DL -->|8. Return 302 Redirect| S3_Storage
+```
 
 ## 🧩 Component Breakdown
 
